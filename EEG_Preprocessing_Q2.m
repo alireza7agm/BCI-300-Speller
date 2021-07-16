@@ -39,14 +39,14 @@ subject1TrainData(2:9,:) = subject1TrainData(2:9,:) - mean(subject1TrainData(2:9
 
 % bandpass filter - 0.5 Hz to 50 Hz
 BPfilteredSubject1TrainData = subject1TrainData(2:9,:);
-BPfilteredSubject1TrainData(2,:) = bandpass(subject1TrainData(2,:),[0.5 50],SamplingFreq);
-BPfilteredSubject1TrainData(3,:) = bandpass(subject1TrainData(3,:),[0.5 50],SamplingFreq);
-BPfilteredSubject1TrainData(4,:) = bandpass(subject1TrainData(4,:),[0.5 50],SamplingFreq);
-BPfilteredSubject1TrainData(5,:) = bandpass(subject1TrainData(5,:),[0.5 50],SamplingFreq);
-BPfilteredSubject1TrainData(6,:) = bandpass(subject1TrainData(6,:),[0.5 50],SamplingFreq);
-BPfilteredSubject1TrainData(7,:) = bandpass(subject1TrainData(7,:),[0.5 50],SamplingFreq);
-BPfilteredSubject1TrainData(8,:) = bandpass(subject1TrainData(8,:),[0.5 50],SamplingFreq);
-BPfilteredSubject1TrainData(9,:) = bandpass(subject1TrainData(9,:),[0.5 50],SamplingFreq);
+BPfilteredSubject1TrainData(1,:) = bandpass(subject1TrainData(2,:),[0.5 40],SamplingFreq);
+BPfilteredSubject1TrainData(2,:) = bandpass(subject1TrainData(3,:),[0.5 40],SamplingFreq);
+BPfilteredSubject1TrainData(3,:) = bandpass(subject1TrainData(4,:),[0.5 40],SamplingFreq);
+BPfilteredSubject1TrainData(4,:) = bandpass(subject1TrainData(5,:),[0.5 40],SamplingFreq);
+BPfilteredSubject1TrainData(5,:) = bandpass(subject1TrainData(6,:),[0.5 40],SamplingFreq);
+BPfilteredSubject1TrainData(6,:) = bandpass(subject1TrainData(7,:),[0.5 40],SamplingFreq);
+BPfilteredSubject1TrainData(7,:) = bandpass(subject1TrainData(8,:),[0.5 40],SamplingFreq);
+BPfilteredSubject1TrainData(8,:) = bandpass(subject1TrainData(9,:),[0.5 40],SamplingFreq);
 
 % fourier transform - rereferenced/bpfiltered
 figure;
@@ -78,16 +78,8 @@ title('Fourier Transform - Channel.8 - Subject1/RerefBp','interpreter','latex');
 
 
 % down sampling/2
-BPfilteredSubject1TrainDataDownSampled = zeros(8,65282/2);
-BPfilteredSubject1TrainDataDownSampled(1,:) = downsample(BPfilteredSubject1TrainData(1,:),2);
-BPfilteredSubject1TrainDataDownSampled(2,:) = downsample(BPfilteredSubject1TrainData(2,:),2);
-BPfilteredSubject1TrainDataDownSampled(3,:) = downsample(BPfilteredSubject1TrainData(3,:),2);
-BPfilteredSubject1TrainDataDownSampled(4,:) = downsample(BPfilteredSubject1TrainData(4,:),2);
-BPfilteredSubject1TrainDataDownSampled(5,:) = downsample(BPfilteredSubject1TrainData(5,:),2);
-BPfilteredSubject1TrainDataDownSampled(6,:) = downsample(BPfilteredSubject1TrainData(6,:),2);
-BPfilteredSubject1TrainDataDownSampled(7,:) = downsample(BPfilteredSubject1TrainData(7,:),2);
-BPfilteredSubject1TrainDataDownSampled(8,:) = downsample(BPfilteredSubject1TrainData(8,:),2);
-
+tmpBPfilteredSubject1TrainDataDownSampled = (BPfilteredSubject1TrainData(1:8,:)).';
+BPfilteredSubject1TrainDataDownSampled = (downsample(tmpBPfilteredSubject1TrainDataDownSampled,2)).';
 
 % epoching
 backwardSamples = 200; % ms
@@ -96,29 +88,6 @@ inputSignal = BPfilteredSubject1TrainDataDownSampled;
 FsN = SamplingFreq / 2; % new Fs
 StimuliTimes = find(subject1TrainData(10,:) ~= 0)./SamplingFreq;
 dataEpoched = epoch(inputSignal,backwardSamples,forwardSamples,StimuliTimes,FsN);
-%% functions
-function FourierTransform(inputSignal,Fs)
-    S = inputSignal;
-    L = length(S);
-    Y = fft(S);
-    P2 = abs(Y/L);
-    P1 = P2(1:L/2+1);
-    P1(2:end-1) = 2*P1(2:end-1);
-    f = Fs*(0:(L/2))/L;
-    plot(f,P1)
-    grid on; grid minor;
-    title('One-Sided Amplitude Spectrum','Interpreter','LaTeX');
-    xlabel('w','Interpreter','LaTeX');
-    ylabel('$|$X(w)$|$','Interpreter','LaTeX');
-end
 
 
-function dataEpoched = epoch(inputSignal,backwardSamples,forwardSamples,StimuliTimes,Fs)
-    numberOfChannels = 8;
-    time = backwardSamples + forwardSamples; % ms
-    dataEpoched = zeros(numberOfChannels,time/1000*Fs,length(StimuliTimes));
-    for i=1:length(StimuliTimes)
-        dataEpoched(:,:,i) = inputSignal(:,((StimuliTimes(1,i)-backwardSamples/1000)*Fs+1):((StimuliTimes(1,i)+forwardSamples/1000))*Fs);
-    end
-end
 
