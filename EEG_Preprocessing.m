@@ -1,6 +1,6 @@
 % question 2
 function dataEpoched = EEG_Preprocessing()
-    clc; close all; clear;
+    clc; close all; clear; warning('off');
     addpath('Dataset');
 
     Subject1 = load('SubjectData1.mat');
@@ -87,6 +87,6 @@ function dataEpoched = EEG_Preprocessing()
     forwardSamples = 800; % ms
     inputSignal = BPfilteredSubject1TrainDataDownSampled;
     FsN = SamplingFreq / 2; % new Fs
-    StimuliTimes = find(subject1TrainData(10,:) ~= 0)./SamplingFreq;
+    StimuliTimes = downsample(find(subject1TrainData(10,:) ~= 0)./SamplingFreq,4);
     dataEpoched = epoch(inputSignal,backwardSamples,forwardSamples,StimuliTimes,FsN);
 end
