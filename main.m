@@ -5,7 +5,8 @@ n = 0:99;
 a = 0.8; 
 x = a.^n;  %x[n] = a^n u[n]  => X(w) = 1/(1-ae^(-jw))
 [Y, w] = HalfBandFFT(x);
-
+xlim([0 pi]);
+legend('a = 0.8', 'Interpreter', 'LaTeX')
 %% Section 2 : Aliasing
 clear; clc; close all;
 
@@ -32,7 +33,8 @@ data = double(load('64channeldata.mat').data);
 data = mean(data,3);
 
 %Check whether filtering is needed for random data channel
-CTFourierTransform(data(37,:),600);
+CTFourierTransform(data(20,:),600);
+title('Frequency Spectrum of Channel 20');
 
 %Downsample the data by rate 4, so nyquist condition is preserved
 tmpData = data.';
