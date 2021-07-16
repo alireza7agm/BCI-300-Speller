@@ -21,7 +21,9 @@ Xd = downsample(x,2);
 figure;
 HalfBandFFT(Xd);
 title('$X_d(\Omega)$');
-%% //////////////////////Part 2 - EEG Preprocessing\\\\\\\\\\\]\\\\\\\\\\\\
+%% //////////////////////Part 2 - EEG Preprocessing\\\\\\\\\\\\\\\\\\\\\\\\
+clc; clear; close all;
+EpchedData = EEG_Preprocessing();
 
 %% ////////////////////Part 3 - Correlation Clustering\\\\\\\\\\\\\\\\\\\\\
 clc; close all;
@@ -62,12 +64,11 @@ clusters = CorrelationClustering(data, 'WPGMA', 4);
 
 %% /////////////////////////Part 4 - Filter Design\\\\\\\\\\\\\\\\\\\\\\\\\
 clc; close all; clear;
+%% Section 1 : Plot Group Delay
 h = load('BPfilter.mat').Num;
 N = 1000000; %N-point DFT
 plotgd(h,N);
-gd1 = groupdelay(h,N);
-gd2 = grpdelay(h,1,N);
-
+%% Section 2 : Z-Phase Filter
 figure
 signal = randi(100,1,N);
 x = signal;
@@ -80,3 +81,6 @@ plot(x2(1:300))
 hold on
 x3 = zphasefilter(h,signal);
 plot(x3(1:300));
+
+%% ///////////////////////Part 5 - Word Recognition\\\\\\\\\\\\\\\\\\\\\\\\
+clc; close all; clear;
