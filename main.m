@@ -28,7 +28,7 @@ EpchedData = EEG_Preprocessing();
 %% ////////////////////Part 3 - Correlation Clustering\\\\\\\\\\\\\\\\\\\\\
 clc; close all;
 %% Section 1 : Clustering on 63-channel Data
-data = double(load('Data\64channeldata.mat').data);
+data = double(load('64channeldata.mat').data);
 data = mean(data,3);
 
 %Check whether filtering is needed for random data channel
@@ -39,22 +39,23 @@ tmpData = data.';
 data = downsample(tmpData , 4);
 data = data.';
 
-clusters = CorrelationClustering(data, 'UPGMA', 10);
+clusterNum = 10;
+clusters = CorrelationClustering(data, 'UPGMA', clusterNum);
 
 channel_title = {'AFZ','FP1','FP2','AF3','AF4','F7','F3','FZ','F4','F8','FC5','FC1','FC2','FC6','T7','C3','CZ',...
     'C4','T8','CP5','CP1','CP2','CP6','P7','P3','PZ','P4','P8','PO3','PO4','O1','O2','FT10','AF7','AF8','F5',...
     'F1','F2','F6','FT7','FC3','FCZ','FC4','FT8','C5','C1','C2','C6','TP7','CP3','CPZ','CP4','TP8','P5','P1','P2','P6',...
     'PO7','POZ','PO8','OZ','TP9','TP10'};
 
-channelPower = zeros(1,size(data,1));
+channelClusterNum = zeros(1,size(data,1));
 for i=1:clusterNum
     channelsOfCluster = clusters{i};
     for j=1:length(channelsOfCluster)
-        channelPower(channelsOfCluster(j)) = 10*i;
+        channelClusterNum(channelsOfCluster(j)) = 10*i;
     end
 end
 
-plot_topography(channel_title,channel,true,'10-20',false,true, 1000);
+plot_topography(channel_title,channelClusterNum,true,'10-20',false,true, 1000);
 
 %% Section 2 : Clustering on 8-Channel Data
 data = EEG_Preprocessing();
