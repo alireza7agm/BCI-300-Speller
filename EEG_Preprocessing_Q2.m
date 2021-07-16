@@ -8,29 +8,29 @@ SamplingFreq = 1/(Subject1.train(1,3) - Subject1.train(1,2))
 % fourier transform - before pre processing
 figure;
 subplot(2,2,1);
-FourierTransform(Subject1.train(2,:),SamplingFreq);
+CTFourierTransform(Subject1.train(2,:),SamplingFreq);
 title('Fourier Transform - Channel.1 - Subject1','interpreter','latex');
 subplot(2,2,2);
-FourierTransform(Subject1.train(3,:),SamplingFreq);
+CTFourierTransform(Subject1.train(3,:),SamplingFreq);
 title('Fourier Transform - Channel.2 - Subject1','interpreter','latex');
 subplot(2,2,3);
-FourierTransform(Subject1.train(4,:),SamplingFreq);
+CTFourierTransform(Subject1.train(4,:),SamplingFreq);
 title('Fourier Transform - Channel.3 - Subject1','interpreter','latex');
 subplot(2,2,4);
-FourierTransform(Subject1.train(5,:),SamplingFreq);
+CTFourierTransform(Subject1.train(5,:),SamplingFreq);
 title('Fourier Transform - Channel.4 - Subject1','interpreter','latex');
 figure
 subplot(2,2,1);
-FourierTransform(Subject1.train(6,:),SamplingFreq);
+CTFourierTransform(Subject1.train(6,:),SamplingFreq);
 title('Fourier Transform - Channel.5 - Subject1','interpreter','latex');
 subplot(2,2,2);
-FourierTransform(Subject1.train(7,:),SamplingFreq);
+CTFourierTransform(Subject1.train(7,:),SamplingFreq);
 title('Fourier Transform - Channel.6 - Subject1','interpreter','latex');
 subplot(2,2,3);
-FourierTransform(Subject1.train(8,:),SamplingFreq);
+CTFourierTransform(Subject1.train(8,:),SamplingFreq);
 title('Fourier Transform - Channel.7 - Subject1','interpreter','latex');
 subplot(2,2,4);
-FourierTransform(Subject1.train(9,:),SamplingFreq);
+CTFourierTransform(Subject1.train(9,:),SamplingFreq);
 title('Fourier Transform - Channel.8 - Subject1','interpreter','latex');
 
 % re-referencing to mean
@@ -51,29 +51,29 @@ BPfilteredSubject1TrainData(8,:) = bandpass(subject1TrainData(9,:),[0.5 40],Samp
 % fourier transform - rereferenced/bpfiltered
 figure;
 subplot(2,2,1);
-FourierTransform(BPfilteredSubject1TrainData(1,:),SamplingFreq);
+CTFourierTransform(BPfilteredSubject1TrainData(1,:),SamplingFreq);
 title('Fourier Transform - Channel.1 - Subject1/RerefBp','interpreter','latex');
 subplot(2,2,2);
-FourierTransform(BPfilteredSubject1TrainData(2,:),SamplingFreq);
+CTFourierTransform(BPfilteredSubject1TrainData(2,:),SamplingFreq);
 title('Fourier Transform - Channel.2 - Subject1/RerefBp','interpreter','latex');
 subplot(2,2,3);
-FourierTransform(BPfilteredSubject1TrainData(3,:),SamplingFreq);
+CTFourierTransform(BPfilteredSubject1TrainData(3,:),SamplingFreq);
 title('Fourier Transform - Channel.3 - Subject1/RerefBp','interpreter','latex');
 subplot(2,2,4);
-FourierTransform(BPfilteredSubject1TrainData(4,:),SamplingFreq);
+CTFourierTransform(BPfilteredSubject1TrainData(4,:),SamplingFreq);
 title('Fourier Transform - Channel.4 - Subject1/RerefBp','interpreter','latex');
 figure
 subplot(2,2,1);
-FourierTransform(BPfilteredSubject1TrainData(5,:),SamplingFreq);
+CTFourierTransform(BPfilteredSubject1TrainData(5,:),SamplingFreq);
 title('Fourier Transform - Channel.5 - Subject1/RerefBp','interpreter','latex');
 subplot(2,2,2);
-FourierTransform(BPfilteredSubject1TrainData(6,:),SamplingFreq);
+CTFourierTransform(BPfilteredSubject1TrainData(6,:),SamplingFreq);
 title('Fourier Transform - Channel.6 - Subject1/RerefBp','interpreter','latex');
 subplot(2,2,3);
-FourierTransform(BPfilteredSubject1TrainData(7,:),SamplingFreq);
+CTFourierTransform(BPfilteredSubject1TrainData(7,:),SamplingFreq);
 title('Fourier Transform - Channel.7 - Subject1/RerefBp','interpreter','latex');
 subplot(2,2,4);
-FourierTransform(BPfilteredSubject1TrainData(8,:),SamplingFreq);
+CTFourierTransform(BPfilteredSubject1TrainData(8,:),SamplingFreq);
 title('Fourier Transform - Channel.8 - Subject1/RerefBp','interpreter','latex');
 
 
