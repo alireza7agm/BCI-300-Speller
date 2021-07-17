@@ -228,14 +228,14 @@ subject = indexExtraction(subject);
 
 
 % seperate targets and non-targets in train epoches
-EpochedDataSub1Train = targetEpochingExtraction(subject.subject1,EpochedDataSub1Train); % sub 1
-EpochedDataSub2Train = targetEpochingExtraction(subject.subject2,EpochedDataSub2Train); % sub 2
-EpochedDataSub3Train = targetEpochingExtraction(subject.subject3,EpochedDataSub3Train); % sub 3
-EpochedDataSub5Train = targetEpochingExtraction(subject.subject5,EpochedDataSub5Train); % sub 5
-EpochedDataSub6Train = targetEpochingExtraction(subject.subject6,EpochedDataSub6Train); % sub 6
-EpochedDataSub7Train = targetEpochingExtraction(subject.subject7,EpochedDataSub7Train); % sub 7
+[nontargets1 targets1 EpochedDataSub1Train] = targetEpochingExtraction(subject.subject1,EpochedDataSub1Train); % sub 1
+[nontargets2 targets2 EpochedDataSub2Train] = targetEpochingExtraction(subject.subject2,EpochedDataSub2Train); % sub 2
+[nontargets3 targets3 EpochedDataSub3Train] = targetEpochingExtraction(subject.subject3,EpochedDataSub3Train); % sub 3
+[nontargets5 targets5 EpochedDataSub5Train] = targetEpochingExtraction(subject.subject5,EpochedDataSub5Train); % sub 5
+[nontargets6 targets6 EpochedDataSub6Train] = targetEpochingExtraction(subject.subject6,EpochedDataSub6Train); % sub 6
+[nontargets7 targets7 EpochedDataSub7Train] = targetEpochingExtraction(subject.subject7,EpochedDataSub7Train); % sub 7
 [nontargets8 targets8 EpochedDataSub8Train] = targetEpochingExtraction(subject.subject8,EpochedDataSub8Train); % sub 8
-EpochedDataSub9Train = targetEpochingExtraction(subject.subject9,EpochedDataSub9Train); % sub 9
+[nontargets9 targets9 EpochedDataSub9Train] = targetEpochingExtraction(subject.subject9,EpochedDataSub9Train); % sub 9
 
 %% Section 2 - machine learning algorithm
 
@@ -248,18 +248,38 @@ size3 = size(EpochedDataSub8Train.notSeparatedEpoch,3);
 lenTarget = size(EpochedDataSub8Train.targetTrainEpoch,3);
 lennonTarget = size(EpochedDataSub8Train.nontargetTrainEpoch,3);
 
-label = cell(size3,1);
-label(targets8) = {'target'};
-label(nontargets8) = {'non-target'};
-
-
+label3 = cell(size3,1);
+label3(targets3) = {'target'};
+label3(nontargets4) = {'non-target'};
+label5 = cell(size3,1);
+label5(targets5) = {'target'};
+label5(nontargets5) = {'non-target'};
+label6 = cell(size3,1);
+label6(targets6) = {'target'};
+label6(nontargets6) = {'non-target'};
+label7 = cell(size3,1);
+label7(targets7) = {'target'};
+label7(nontargets7) = {'non-target'};
+label8 = cell(size3,1);
+label8(targets8) = {'target'};
+label8(nontargets8) = {'non-target'};
+label9 = cell(size3,1);
+label9(targets9) = {'target'};
+label9(nontargets9) = {'non-target'};
+totalLabel = [label3; label5; label6; label7; label8; label9];
 % feature matrix 
 % trainFeatures = zeros(size3,size1*size2);
-trainFeatures = reshape(permute(EpochedDataSub8Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
+trainFeatures3 = reshape(permute(EpochedDataSub3Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
+trainFeatures5 = reshape(permute(EpochedDataSub5Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
+trainFeatures6 = reshape(permute(EpochedDataSub6Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
+trainFeatures7 = reshape(permute(EpochedDataSub7Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
+trainFeatures8 = reshape(permute(EpochedDataSub8Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
+trainFeatures9 = reshape(permute(EpochedDataSub9Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
+totalTrainFeature = [trainFeatures3;trainFeatures5;trainFeatures6;trainFeatures7;trainFeatures8;trainFeatures9];
 testFeatures = reshape(permute(EpchedDataSub8Test,[2 1 3]),[size1*size2,size3]).';
 % trainFeatures = [(reshape(permute(EpochedDataSub8Train.targetTrainEpoch,[2 1 3]),[size1*size2,lenTarget])).';... 
     %(reshape(permute(EpochedDataSub8Train.nontargetTrainEpoch,[2 1 3]),[size1*size2,lennonTarget])).'];
 
-XX = fitcdiscr(trainFeatures,label);
+XX = fitcdiscr(totalTrainFeature,totalLabel);
 outputlabels = predict(XX,testFeatures);
 
