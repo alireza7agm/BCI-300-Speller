@@ -41,6 +41,14 @@ tmpData = data.';
 data = downsample(tmpData , 4);
 data = data.';
 
+%Finding the optimal number of clusters
+SSE = Elbow_Method(data,'UPGMA');
+plot(1:size(data,1), SSE);
+grid on; grid minor;
+title('SSE of clustering','Interpreter','LateX');
+xlabel('Number of clusters','Interpreter','LateX');
+ylabel('Distances','Interpreter','LateX');
+
 clusterNum = 10;
 clusters = CorrelationClustering(data, 'UPGMA', clusterNum);
 
@@ -58,6 +66,7 @@ for i=1:clusterNum
 end
 
 plot_topography(channel_title,channelClusterNum,true,'10-20',false,true, 1000);
+
 
 %% Section 2 : Clustering on 8-Channel Data
 data = EEG_Preprocessing();
