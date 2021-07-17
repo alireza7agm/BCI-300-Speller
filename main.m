@@ -27,7 +27,7 @@ clc; clear; close all;
 
 % load data
 Subject = load('SubjectData9.mat');
-[SamplingFreq BPfilteredSubjectTrainData EpchedData] = EEG_Preprocessing(Subject,'train');
+[SamplingFreq BPfilteredSubjectTrainData EpochedData] = EEG_Preprocessing(Subject,'train');
 
 % fourier transform - before pre processing
 figure;
@@ -168,7 +168,7 @@ legend('filtfilt','zphasefilter')
 
 %% ///////////////////////Part 5 - Word Recognition\\\\\\\\\\\\\\\\\\\\\\\\
 clc; close all; clear;
-%%
+%% Section 1
 % part.1 
 addpath('Dataset');
 % load data
@@ -195,35 +195,71 @@ subject = indexExtraction(subject);
 
 % epoch the data for the subject
 % subject 1 epoching
-[~, ~, EpchedDataSub1Train] = EEG_Preprocessing(subject.subject1,'train');
-[~, ~, EpchedDataSub1Test] = EEG_Preprocessing(subject.subject1,'test');
+[~, ~, EpochedDataSub1Train] = EEG_Preprocessing(subject.subject1,'train');
+[~, ~, EpochedDataSub1Test] = EEG_Preprocessing(subject.subject1,'test');
 
 % subject 2 epoching
-[~, ~, EpchedDataSub2Train] = EEG_Preprocessing(subject.subject2,'train');
-[~, ~, EpchedDataSub2Test] = EEG_Preprocessing(subject.subject2,'test');
+[~, ~, EpochedDataSub2Train] = EEG_Preprocessing(subject.subject2,'train');
+[~, ~, EpochedDataSub2Test] = EEG_Preprocessing(subject.subject2,'test');
 
 % subject 3 epoching
-[~, ~, EpchedDataSub3Train] = EEG_Preprocessing(subject.subject3,'train');
-[~, ~, EpchedDataSub3Test] = EEG_Preprocessing(subject.subject3,'test');
+[~, ~, EpochedDataSub3Train] = EEG_Preprocessing(subject.subject3,'train');
+[~, ~, EpochedDataSub3Test] = EEG_Preprocessing(subject.subject3,'test');
 
 % subject 5 epoching
-[~, ~, EpchedDataSub5Train] = EEG_Preprocessing(subject.subject5,'train');
-[~, ~, EpchedDataSub5Test] = EEG_Preprocessing(subject.subject5,'test');
+[~, ~, EpochedDataSub5Train] = EEG_Preprocessing(subject.subject5,'train');
+[~, ~, EpochedDataSub5Test] = EEG_Preprocessing(subject.subject5,'test');
 
 % subject 6 epoching
-[~, ~, EpchedDataSub6Train] = EEG_Preprocessing(subject.subject6,'train');
-[~, ~, EpchedDataSub6Test] = EEG_Preprocessing(subject.subject6,'test');
+[~, ~, EpochedDataSub6Train] = EEG_Preprocessing(subject.subject6,'train');
+[~, ~, EpochedDataSub6Test] = EEG_Preprocessing(subject.subject6,'test');
 
 % subject 7 epoching
-[~, ~, EpchedDataSub7Train] = EEG_Preprocessing(subject.subject7,'train');
-[~, ~, EpchedDataSub7Test] = EEG_Preprocessing(subject.subject7,'test');
+[~, ~, EpochedDataSub7Train] = EEG_Preprocessing(subject.subject7,'train');
+[~, ~, EpochedDataSub7Test] = EEG_Preprocessing(subject.subject7,'test');
 
 % subject 8 epoching
-[~, ~, EpchedDataSub8Train] = EEG_Preprocessing(subject.subject8,'train');
-[~, ~, EpchedDataSub8Test] = EEG_Preprocessing(subject.subject8,'test');
+[~, ~, EpochedDataSub8Train] = EEG_Preprocessing(subject.subject8,'train');
+[~, ~, EpochedDataSub8Test] = EEG_Preprocessing(subject.subject8,'test');
 
 % subject 9 epoching
-[~, ~, EpchedDataSub9Train] = EEG_Preprocessing(subject.subject9,'train');
-[~, ~, EpchedDataSub9Test] = EEG_Preprocessing(subject.subject9,'test');
+[~, ~, EpochedDataSub9Train] = EEG_Preprocessing(subject.subject9,'train');
+[~, ~, EpochedDataSub9Test] = EEG_Preprocessing(subject.subject9,'test');
 
+
+% seperate targets and non-targets in train epoches
+EpochedDataSub1Train = targetEpochingExtraction(subject.subject1,EpochedDataSub1Train); % sub 1
+EpochedDataSub2Train = targetEpochingExtraction(subject.subject2,EpochedDataSub2Train); % sub 2
+EpochedDataSub3Train = targetEpochingExtraction(subject.subject3,EpochedDataSub3Train); % sub 3
+EpochedDataSub5Train = targetEpochingExtraction(subject.subject5,EpochedDataSub5Train); % sub 5
+EpochedDataSub6Train = targetEpochingExtraction(subject.subject6,EpochedDataSub6Train); % sub 6
+EpochedDataSub7Train = targetEpochingExtraction(subject.subject7,EpochedDataSub7Train); % sub 7
+[nontargets8 targets8 EpochedDataSub8Train] = targetEpochingExtraction(subject.subject8,EpochedDataSub8Train); % sub 8
+EpochedDataSub9Train = targetEpochingExtraction(subject.subject9,EpochedDataSub9Train); % sub 9
+
+%% Section 2 - machine learning algorithm
+
+% create a Train-features matrix
+% sub.8
+% labels
+size1 = size(EpochedDataSub8Train.notSeparatedEpoch,1);
+size2 = size(EpochedDataSub8Train.notSeparatedEpoch,2);
+size3 = size(EpochedDataSub8Train.notSeparatedEpoch,3);
+lenTarget = size(EpochedDataSub8Train.targetTrainEpoch,3);
+lennonTarget = size(EpochedDataSub8Train.nontargetTrainEpoch,3);
+
+label = cell(size3,1);
+label(targets8) = {'target'};
+label(nontargets8) = {'non-target'};
+
+
+% feature matrix 
+% trainFeatures = zeros(size3,size1*size2);
+trainFeatures = reshape(permute(EpochedDataSub8Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
+testFeatures = reshape(permute(EpchedDataSub8Test,[2 1 3]),[size1*size2,size3]).';
+% trainFeatures = [(reshape(permute(EpochedDataSub8Train.targetTrainEpoch,[2 1 3]),[size1*size2,lenTarget])).';... 
+    %(reshape(permute(EpochedDataSub8Train.nontargetTrainEpoch,[2 1 3]),[size1*size2,lennonTarget])).'];
+
+XX = fitcdiscr(trainFeatures,label);
+outputlabels = predict(XX,testFeatures);
 
