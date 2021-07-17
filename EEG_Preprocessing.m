@@ -1,92 +1,40 @@
 % question 2
-function dataEpoched = EEG_Preprocessing()
-    clc; close all; clear; warning('off');
+function [SamplingFreq BPfilteredSubjectData dataEpoched] = EEG_Preprocessing(Subject,Method)
+    warning('off');
     addpath('Dataset');
-
-    Subject1 = load('SubjectData1.mat');
-    SamplingFreq = 1/(Subject1.train(1,3) - Subject1.train(1,2))
-
-    % fourier transform - before pre processing
-    figure;
-    subplot(2,2,1);
-    CTFourierTransform(Subject1.train(2,:),SamplingFreq);
-    title('Fourier Transform - Channel.1 - Subject1','interpreter','latex');
-    subplot(2,2,2);
-    CTFourierTransform(Subject1.train(3,:),SamplingFreq);
-    title('Fourier Transform - Channel.2 - Subject1','interpreter','latex');
-    subplot(2,2,3);
-    CTFourierTransform(Subject1.train(4,:),SamplingFreq);
-    title('Fourier Transform - Channel.3 - Subject1','interpreter','latex');
-    subplot(2,2,4);
-    CTFourierTransform(Subject1.train(5,:),SamplingFreq);
-    title('Fourier Transform - Channel.4 - Subject1','interpreter','latex');
-    figure
-    subplot(2,2,1);
-    CTFourierTransform(Subject1.train(6,:),SamplingFreq);
-    title('Fourier Transform - Channel.5 - Subject1','interpreter','latex');
-    subplot(2,2,2);
-    CTFourierTransform(Subject1.train(7,:),SamplingFreq);
-    title('Fourier Transform - Channel.6 - Subject1','interpreter','latex');
-    subplot(2,2,3);
-    CTFourierTransform(Subject1.train(8,:),SamplingFreq);
-    title('Fourier Transform - Channel.7 - Subject1','interpreter','latex');
-    subplot(2,2,4);
-    CTFourierTransform(Subject1.train(9,:),SamplingFreq);
-    title('Fourier Transform - Channel.8 - Subject1','interpreter','latex');
+    
 
     % re-referencing to mean
-    subject1TrainData = Subject1.train;
-    subject1TrainData(2:9,:) = subject1TrainData(2:9,:) - mean(subject1TrainData(2:9,:),1);
+    if(Method == 'train')
+        SubjectData = Subject.test;
+    else
+        SubjectData = Subject.train;
+    end
+    
+    SamplingFreq = 1/(SubjectData(1,3) - SubjectData(1,2))
+    SubjectData(2:9,:) = SubjectData(2:9,:) - mean(SubjectData(2:9,:),1);
 
     % bandpass filter - 0.5 Hz to 50 Hz
-    BPfilteredSubject1TrainData = subject1TrainData(2:9,:);
-    BPfilteredSubject1TrainData(1,:) = bandpass(subject1TrainData(2,:),[0.5 40],SamplingFreq);
-    BPfilteredSubject1TrainData(2,:) = bandpass(subject1TrainData(3,:),[0.5 40],SamplingFreq);
-    BPfilteredSubject1TrainData(3,:) = bandpass(subject1TrainData(4,:),[0.5 40],SamplingFreq);
-    BPfilteredSubject1TrainData(4,:) = bandpass(subject1TrainData(5,:),[0.5 40],SamplingFreq);
-    BPfilteredSubject1TrainData(5,:) = bandpass(subject1TrainData(6,:),[0.5 40],SamplingFreq);
-    BPfilteredSubject1TrainData(6,:) = bandpass(subject1TrainData(7,:),[0.5 40],SamplingFreq);
-    BPfilteredSubject1TrainData(7,:) = bandpass(subject1TrainData(8,:),[0.5 40],SamplingFreq);
-    BPfilteredSubject1TrainData(8,:) = bandpass(subject1TrainData(9,:),[0.5 40],SamplingFreq);
-
-    % fourier transform - rereferenced/bpfiltered
-    figure;
-    subplot(2,2,1);
-    CTFourierTransform(BPfilteredSubject1TrainData(1,:),SamplingFreq);
-    title('Fourier Transform - Channel.1 - Subject1/RerefBp','interpreter','latex');
-    subplot(2,2,2);
-    CTFourierTransform(BPfilteredSubject1TrainData(2,:),SamplingFreq);
-    title('Fourier Transform - Channel.2 - Subject1/RerefBp','interpreter','latex');
-    subplot(2,2,3);
-    CTFourierTransform(BPfilteredSubject1TrainData(3,:),SamplingFreq);
-    title('Fourier Transform - Channel.3 - Subject1/RerefBp','interpreter','latex');
-    subplot(2,2,4);
-    CTFourierTransform(BPfilteredSubject1TrainData(4,:),SamplingFreq);
-    title('Fourier Transform - Channel.4 - Subject1/RerefBp','interpreter','latex');
-    figure
-    subplot(2,2,1);
-    CTFourierTransform(BPfilteredSubject1TrainData(5,:),SamplingFreq);
-    title('Fourier Transform - Channel.5 - Subject1/RerefBp','interpreter','latex');
-    subplot(2,2,2);
-    CTFourierTransform(BPfilteredSubject1TrainData(6,:),SamplingFreq);
-    title('Fourier Transform - Channel.6 - Subject1/RerefBp','interpreter','latex');
-    subplot(2,2,3);
-    CTFourierTransform(BPfilteredSubject1TrainData(7,:),SamplingFreq);
-    title('Fourier Transform - Channel.7 - Subject1/RerefBp','interpreter','latex');
-    subplot(2,2,4);
-    CTFourierTransform(BPfilteredSubject1TrainData(8,:),SamplingFreq);
-    title('Fourier Transform - Channel.8 - Subject1/RerefBp','interpreter','latex');
+    BPfilteredSubjectData = SubjectData(2:9,:);
+    BPfilteredSubjectData(1,:) = bandpass(SubjectData(2,:),[0.5 40],SamplingFreq);
+    BPfilteredSubjectData(2,:) = bandpass(SubjectData(3,:),[0.5 40],SamplingFreq);
+    BPfilteredSubjectData(3,:) = bandpass(SubjectData(4,:),[0.5 40],SamplingFreq);
+    BPfilteredSubjectData(4,:) = bandpass(SubjectData(5,:),[0.5 40],SamplingFreq);
+    BPfilteredSubjectData(5,:) = bandpass(SubjectData(6,:),[0.5 40],SamplingFreq);
+    BPfilteredSubjectData(6,:) = bandpass(SubjectData(7,:),[0.5 40],SamplingFreq);
+    BPfilteredSubjectData(7,:) = bandpass(SubjectData(8,:),[0.5 40],SamplingFreq);
+    BPfilteredSubjectData(8,:) = bandpass(SubjectData(9,:),[0.5 40],SamplingFreq);
 
 
     % down sampling/2
-    tmpBPfilteredSubject1TrainDataDownSampled = (BPfilteredSubject1TrainData(1:8,:)).';
-    BPfilteredSubject1TrainDataDownSampled = (downsample(tmpBPfilteredSubject1TrainDataDownSampled,2)).';
+    tmpBPfilteredSubjectDataDownSampled = (BPfilteredSubjectData(1:8,:)).';
+    BPfilteredSubjectDataDownSampled = (downsample(tmpBPfilteredSubjectDataDownSampled,2)).';
 
     % epoching
     backwardSamples = 200; % ms
     forwardSamples = 800; % ms
-    inputSignal = BPfilteredSubject1TrainDataDownSampled;
+    inputSignal = BPfilteredSubjectDataDownSampled;
     FsN = SamplingFreq / 2; % new Fs
-    StimuliTimes = downsample(find(subject1TrainData(10,:) ~= 0)./SamplingFreq,4);
+    StimuliTimes = downsample(find(SubjectData(10,:) ~= 0)./SamplingFreq,4);
     dataEpoched = epoch(inputSignal,backwardSamples,forwardSamples,StimuliTimes,FsN);
 end
