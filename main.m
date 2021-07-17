@@ -24,7 +24,68 @@ HalfBandFFT(Xd);
 title('$X_d(\Omega)$');
 %% //////////////////////Part 2 - EEG Preprocessing\\\\\\\\\\\\\\\\\\\\\\\\
 clc; clear; close all;
-EpchedData = EEG_Preprocessing();
+
+% load data
+Subject = load('SubjectData1.mat');
+[SamplingFreq BPfilteredSubjectTrainData EpchedData] = EEG_Preprocessing(Subject,'train');
+
+% fourier transform - before pre processing
+figure;
+subplot(2,2,1);
+CTFourierTransform(Subject.train(2,:),SamplingFreq);
+title('Fourier Transform - Channel.1 - Subject','interpreter','latex');
+subplot(2,2,2);
+CTFourierTransform(Subject.train(3,:),SamplingFreq);
+title('Fourier Transform - Channel.2 - Subject','interpreter','latex');
+subplot(2,2,3);
+CTFourierTransform(Subject.train(4,:),SamplingFreq);
+title('Fourier Transform - Channel.3 - Subject','interpreter','latex');
+subplot(2,2,4);
+CTFourierTransform(Subject.train(5,:),SamplingFreq);
+title('Fourier Transform - Channel.4 - Subject','interpreter','latex');
+figure
+subplot(2,2,1);
+CTFourierTransform(Subject.train(6,:),SamplingFreq);
+title('Fourier Transform - Channel.5 - Subject','interpreter','latex');
+subplot(2,2,2);
+CTFourierTransform(Subject.train(7,:),SamplingFreq);
+title('Fourier Transform - Channel.6 - Subject','interpreter','latex');
+subplot(2,2,3);
+CTFourierTransform(Subject.train(8,:),SamplingFreq);
+title('Fourier Transform - Channel.7 - Subject','interpreter','latex');
+subplot(2,2,4);
+CTFourierTransform(Subject.train(9,:),SamplingFreq);
+title('Fourier Transform - Channel.8 - Subject','interpreter','latex');
+
+% fourier transform - rereferenced/bpfiltered
+figure;
+subplot(2,2,1);
+CTFourierTransform(BPfilteredSubjectTrainData(1,:),SamplingFreq);
+title('Fourier Transform - Channel.1 - Subject/RerefBp','interpreter','latex');
+subplot(2,2,2);
+CTFourierTransform(BPfilteredSubjectTrainData(2,:),SamplingFreq);
+title('Fourier Transform - Channel.2 - Subject/RerefBp','interpreter','latex');
+subplot(2,2,3);
+CTFourierTransform(BPfilteredSubjectTrainData(3,:),SamplingFreq);
+title('Fourier Transform - Channel.3 - Subject/RerefBp','interpreter','latex');
+subplot(2,2,4);
+CTFourierTransform(BPfilteredSubjectTrainData(4,:),SamplingFreq);
+title('Fourier Transform - Channel.4 - Subject/RerefBp','interpreter','latex');
+figure
+subplot(2,2,1);
+CTFourierTransform(BPfilteredSubjectTrainData(5,:),SamplingFreq);
+title('Fourier Transform - Channel.5 - Subject/RerefBp','interpreter','latex');
+subplot(2,2,2);
+CTFourierTransform(BPfilteredSubjectTrainData(6,:),SamplingFreq);
+title('Fourier Transform - Channel.6 - Subject/RerefBp','interpreter','latex');
+subplot(2,2,3);
+CTFourierTransform(BPfilteredSubjectTrainData(7,:),SamplingFreq);
+title('Fourier Transform - Channel.7 - Subject/RerefBp','interpreter','latex');
+subplot(2,2,4);
+CTFourierTransform(BPfilteredSubjectTrainData(8,:),SamplingFreq);
+title('Fourier Transform - Channel.8 - Subject/RerefBp','interpreter','latex');
+
+
 
 %% ////////////////////Part 3 - Correlation Clustering\\\\\\\\\\\\\\\\\\\\\
 clc; close all;
