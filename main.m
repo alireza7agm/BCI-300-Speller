@@ -26,7 +26,7 @@ title('$X_d(\Omega)$');
 clc; clear; close all;
 
 % load data
-Subject = load('SubjectData1.mat');
+Subject = load('SubjectData9.mat');
 [SamplingFreq BPfilteredSubjectTrainData EpchedData] = EEG_Preprocessing(Subject,'train');
 
 % fourier transform - before pre processing
@@ -193,7 +193,37 @@ subject = struct('subject1',sub1,'subject2',sub2,'subject3',sub3,'subject5',sub5
 % column/row and target status % target = 1; nontarget = -1
 subject = indexExtraction(subject);
 
+% epoch the data for the subject
+% subject 1 epoching
+[~, ~, EpchedDataSub1Train] = EEG_Preprocessing(subject.subject1,'train');
+[~, ~, EpchedDataSub1Test] = EEG_Preprocessing(subject.subject1,'test');
 
+% subject 2 epoching
+[~, ~, EpchedDataSub2Train] = EEG_Preprocessing(subject.subject2,'train');
+[~, ~, EpchedDataSub2Test] = EEG_Preprocessing(subject.subject2,'test');
 
+% subject 3 epoching
+[~, ~, EpchedDataSub3Train] = EEG_Preprocessing(subject.subject3,'train');
+[~, ~, EpchedDataSub3Test] = EEG_Preprocessing(subject.subject3,'test');
+
+% subject 5 epoching
+[~, ~, EpchedDataSub5Train] = EEG_Preprocessing(subject.subject5,'train');
+[~, ~, EpchedDataSub5Test] = EEG_Preprocessing(subject.subject5,'test');
+
+% subject 6 epoching
+[~, ~, EpchedDataSub6Train] = EEG_Preprocessing(subject.subject6,'train');
+[~, ~, EpchedDataSub6Test] = EEG_Preprocessing(subject.subject6,'test');
+
+% subject 7 epoching
+[~, ~, EpchedDataSub7Train] = EEG_Preprocessing(subject.subject7,'train');
+[~, ~, EpchedDataSub7Test] = EEG_Preprocessing(subject.subject7,'test');
+
+% subject 8 epoching
+[~, ~, EpchedDataSub8Train] = EEG_Preprocessing(subject.subject8,'train');
+[~, ~, EpchedDataSub8Test] = EEG_Preprocessing(subject.subject8,'test');
+
+% subject 9 epoching
+[~, ~, EpchedDataSub9Train] = EEG_Preprocessing(subject.subject9,'train');
+[~, ~, EpchedDataSub9Test] = EEG_Preprocessing(subject.subject9,'test');
 
 
