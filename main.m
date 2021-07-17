@@ -68,22 +68,33 @@ clusters = CorrelationClustering(data, 'WPGMA', 4);
 %% /////////////////////////Part 4 - Filter Design\\\\\\\\\\\\\\\\\\\\\\\\\
 clc; close all; clear;
 %% Section 1 : Plot Group Delay
+addpath('Filter');
 h = load('BPfilter.mat').Num;
 N = 1000000; %N-point DFT
 plotgd(h,N);
 %% Section 2 : Z-Phase Filter
 figure
-signal = randi(100,1,N);
+addpath('Filter');
+h = load('BPfilter.mat').Num;
+N = 1000000; %N-point DFT
+signal = 0.5.*randi(100,1,N);
 x = signal;
-subplot(2,1,1)
-plot(x(1:300))
+
+
+x2 = filtfilt(h,1,signal);
+[x3gp x3] = zphasefilter(h,signal);
+
+subplot(2,1,1);
+plot(x3gp(1:1000));
+title('filtered with the bp filter - gp available');
 
 subplot(2,1,2)
-x2 = filtfilt(h,1,signal);
 plot(x2(1:300))
+title('filtered by zphasefilter\filtfilt Matlab function','interpreter','Latex')
 hold on
-x3 = zphasefilter(h,signal);
 plot(x3(1:300));
+grid on;
+legend('filtfilt','zphasefilter')
 
 %% ///////////////////////Part 5 - Word Recognition\\\\\\\\\\\\\\\\\\\\\\\\
 clc; close all; clear;
