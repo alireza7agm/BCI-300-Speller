@@ -107,3 +107,32 @@ legend('filtfilt','zphasefilter')
 
 %% ///////////////////////Part 5 - Word Recognition\\\\\\\\\\\\\\\\\\\\\\\\
 clc; close all; clear;
+%%
+% part.1 
+addpath('Dataset');
+% load data
+sub1 = load('SubjectData1.mat');
+sub2 = load('SubjectData2.mat');
+sub3 = load('SubjectData3.mat');
+sub5 = load('SubjectData5.mat');
+sub6 = load('SubjectData6.mat');
+sub7 = load('SubjectData7.mat');
+sub8 = load('SubjectData8.mat');
+sub9 = load('SubjectData9.mat');
+
+% experiment paradigm 
+subParadigm = checkParadigm(sub1)
+
+% part.3 - target and non-target/index extarction
+% initilize a struct for all subjects
+subject = struct('subject1',sub1,'subject2',sub2,'subject3',sub3,'subject5',sub5,...
+    'subject6',sub6,'subject7',sub7,'subject8',sub8,'subject9',sub9);
+
+% index extraction - number of samples when the screen bright a number or a
+% column/row and target status % target = 1; nontarget = -1
+subject = indexExtraction(subject);
+
+
+
+
+
