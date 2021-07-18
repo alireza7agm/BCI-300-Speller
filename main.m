@@ -1,4 +1,4 @@
-%% ////////////////////Part 1 - Correlation Clustering\\\\\\\\\\\\\\\\\\\\\
+%% /////////////////////Part 1 - Sampling & DFT\\\\\\\\\\\\\\\\\\\\\\\\\
 clc; clear; close all;
 %% Section 1 : Half Band FFT
 n = 0:99;
