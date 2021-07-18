@@ -26,7 +26,7 @@ title('$X_d(\Omega)$');
 clc; clear; close all;
 
 % load data
-Subject = load('SubjectData9.mat');
+Subject = load('SubjectData1.mat');
 [SamplingFreq BPfilteredSubjectTrainData EpochedData] = EEG_Preprocessing(Subject,'train');
 
 % fourier transform - before pre processing
@@ -103,10 +103,11 @@ data = downsample(tmpData , 4);
 data = data.';
 
 %Finding the optimal number of clusters
+figure;
 SSE = Elbow_Method(data,'UPGMA');
 plot(1:size(data,1), SSE);
 grid on; grid minor;
-title('SSE of clustering','Interpreter','LateX');
+title('SSE of clustering using UPGMA method','Interpreter','LateX');
 xlabel('Number of clusters','Interpreter','LateX');
 ylabel('Distances','Interpreter','LateX');
 
@@ -125,15 +126,25 @@ for i=1:clusterNum
         channelClusterNum(channelsOfCluster(j)) = 10*i;
     end
 end
-
+figure;
 plot_topography(channel_title,channelClusterNum,true,'10-20',false,true, 1000);
 
 
 %% Section 2 : Clustering on 8-Channel Data
-data = EEG_Preprocessing();
+Subject1Data = load('SubjectData1.mat');
+[~,~,data] = EEG_Preprocessing(Subject1Data,'train');
 data = mean(data,3);
 
-clusters = CorrelationClustering(data, 'WPGMA', 4);
+%Finding the optimal number of clusters
+figure;
+SSE = Elbow_Method(data,'UPGMA');
+plot(1:size(data,1), SSE);
+grid on; grid minor;
+title('SSE of clustering using UPGMA method','Interpreter','LateX');
+xlabel('Number of clusters','Interpreter','LateX');
+ylabel('Distances','Interpreter','LateX');
+
+clusters = CorrelationClustering(data, 'UPGMA',4);
 
 %% /////////////////////////Part 4 - Filter Design\\\\\\\\\\\\\\\\\\\\\\\\\
 clc; close all; clear;
@@ -237,10 +248,10 @@ subject = indexExtraction(subject);
 [nontargets8 targets8 EpochedDataSub8Train] = targetEpochingExtraction(subject.subject8,EpochedDataSub8Train); % sub 8
 [nontargets9 targets9 EpochedDataSub9Train] = targetEpochingExtraction(subject.subject9,EpochedDataSub9Train); % sub 9
 
-%% Section 2 - machine learning algorithm
+%% Section 2 - Machine Learning Algorithm
 
-% create a Train/Test-features matrix
-% sub.8
+% create a Train/Test-features matrix for a sample object: Subject 8
+
 % labels
 size1 = size(EpochedDataSub8Train.notSeparatedEpoch,1);
 size2 = size(EpochedDataSub8Train.notSeparatedEpoch,2);
