@@ -147,7 +147,7 @@ function [output2 output] = threshold(inputWord,Method)
             [n,bin] = hist((inputWord((i-1)*shift+1:(i-1)*shift+shift)),unique(inputWord((i-1)*shift+1:(i-1)*shift+shift)));
             [~,idx] = sort(-n);
             X = bin(idx);
-            if(length(X) == 1 && strcmp(Method,'SC'))
+            if(length(X) == 1)
                 X = [X 0];
             end
             if(strcmp(Method,'RC') == 1)
@@ -162,6 +162,9 @@ function [output2 output] = threshold(inputWord,Method)
             [~,idx] = sort(-n);
             X = bin(idx);
             output = [output  X(1)];
+            if(length(X) == 1)
+                X = [X 0];
+            end
             output2 = [[output2 X(1)] X(2)];
         end
     end
