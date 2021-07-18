@@ -5,7 +5,7 @@ function [SamplingFreq BPfilteredSubjectData dataEpoched] = EEG_Preprocessing(Su
     
 
     % re-referencing to mean
-    if(Method == 'train')
+    if(strcmp(Method,'train') == 1)
         SubjectData = Subject.test;
     else
         SubjectData = Subject.train;
