@@ -39,6 +39,7 @@ function outputWord = createWord(inputLabel,Stimulus,Method)
         codedWord(find(Word == 35)) = '8';
         codedWord(find(Word == 36)) = '9';
         outputWord = char(codedWord);
+        outputWord = outputWord(1:(end-1));
     else
         outputWord = '';
         [Word2,~] = threshold(Word,'RC');
@@ -130,7 +131,7 @@ function outputWord = createWord(inputLabel,Stimulus,Method)
             end
         end
     end
-    outputWord = outputWord(1:5);
+
 end
 
 
