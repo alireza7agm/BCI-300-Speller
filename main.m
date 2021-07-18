@@ -239,7 +239,7 @@ subject = indexExtraction(subject);
 
 %% Section 2 - machine learning algorithm
 
-% create a Train-features matrix
+% create a Train/Test-features matrix
 % sub.8
 % labels
 size1 = size(EpochedDataSub8Train.notSeparatedEpoch,1);
@@ -248,38 +248,29 @@ size3 = size(EpochedDataSub8Train.notSeparatedEpoch,3);
 lenTarget = size(EpochedDataSub8Train.targetTrainEpoch,3);
 lennonTarget = size(EpochedDataSub8Train.nontargetTrainEpoch,3);
 
-label3 = cell(size3,1);
-label3(targets3) = {'target'};
-label3(nontargets4) = {'non-target'};
-label5 = cell(size3,1);
-label5(targets5) = {'target'};
-label5(nontargets5) = {'non-target'};
-label6 = cell(size3,1);
-label6(targets6) = {'target'};
-label6(nontargets6) = {'non-target'};
-label7 = cell(size3,1);
-label7(targets7) = {'target'};
-label7(nontargets7) = {'non-target'};
-label8 = cell(size3,1);
-label8(targets8) = {'target'};
-label8(nontargets8) = {'non-target'};
-label9 = cell(size3,1);
-label9(targets9) = {'target'};
-label9(nontargets9) = {'non-target'};
-totalLabel = [label3; label5; label6; label7; label8; label9];
+label = cell(size3,1);
+label(targets8) = {'target'};
+label(nontargets8) = {'non-target'};
+
+
 % feature matrix 
 % trainFeatures = zeros(size3,size1*size2);
-trainFeatures3 = reshape(permute(EpochedDataSub3Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
-trainFeatures5 = reshape(permute(EpochedDataSub5Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
-trainFeatures6 = reshape(permute(EpochedDataSub6Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
-trainFeatures7 = reshape(permute(EpochedDataSub7Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
-trainFeatures8 = reshape(permute(EpochedDataSub8Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
-trainFeatures9 = reshape(permute(EpochedDataSub9Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
-totalTrainFeature = [trainFeatures3;trainFeatures5;trainFeatures6;trainFeatures7;trainFeatures8;trainFeatures9];
-testFeatures = reshape(permute(EpchedDataSub8Test,[2 1 3]),[size1*size2,size3]).';
+trainFeatures = reshape(permute(EpochedDataSub8Train.notSeparatedEpoch,[2 1 3]),[size1*size2,size3]).';
+testFeatures = reshape(permute(EpochedDataSub8Test,[2 1 3]),[size1*size2,size3]).';
 % trainFeatures = [(reshape(permute(EpochedDataSub8Train.targetTrainEpoch,[2 1 3]),[size1*size2,lenTarget])).';... 
     %(reshape(permute(EpochedDataSub8Train.nontargetTrainEpoch,[2 1 3]),[size1*size2,lennonTarget])).'];
 
-XX = fitcdiscr(totalTrainFeature,totalLabel);
-outputlabels = predict(XX,testFeatures);
-
+XX1 = fitcdiscr(trainFeatures,label);
+XX2 = fitcsvm(trainFeatures,label);
+% train
+output1labelsTrain = predict(XX1,trainFeatures);
+output2labelsTrain = predict(XX2,trainFeatures);
+% test
+output1labelsTest = predict(XX1,testFeatures);
+output2labelsTest = predict(XX2,testFeatures);
+% print the word - Train
+outputWordTrain1 = createWord(output1labelsTrain,sub8.train(10,downsample(find(sub8.train(10,:) ~= 0),4)),'RC')
+outputWordTrain2 = createWord(output2labelsTrain,sub8.train(10,downsample(find(sub8.train(10,:) ~= 0),4)),'RC')
+% print the word - Test
+outputWordTest1 = createWord(output1labelsTest,sub8.test(10,downsample(find(sub8.test(10,:) ~= 0),4)),'RC')
+outputWordTest2 = createWord(output2labelsTest,sub8.test(10,downsample(find(sub8.test(10,:) ~= 0),4)),'RC')
