@@ -25,5 +25,5 @@ BCI P300 Speller preprocessing and processing:
 **Part5:**
   * 1 - Apply Pre Processings to all of the subjects
  > EEG Signal Processings
-  * 2 - Using SVM and LDA machine learning functions to train classification models
+  * 2 - Using SVM and LDA machine learning algortihms to train classification models
   * 3 - Predict function to get the predicted outputs
